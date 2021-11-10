@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    password: consoles
+    username: consoles
+    url: jdbc:mysql://localhost:3306/consoles
+
+logging:
+  level:
+    root: warn
+    '[com.promineotech]': debug
