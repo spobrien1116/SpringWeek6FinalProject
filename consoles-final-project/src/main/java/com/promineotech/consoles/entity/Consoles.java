@@ -1,5 +1,6 @@
 package com.promineotech.consoles.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,4 +17,9 @@ public class Consoles {
   private int releaseYear;
   private double releasePrice;
   private int onlineCapable;
+  
+//  @JsonIgnore
+//  public String getConsoleName() {
+//    return consoleName;
+//  }
 }
