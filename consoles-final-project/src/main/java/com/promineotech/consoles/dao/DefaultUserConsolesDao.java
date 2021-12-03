@@ -27,7 +27,7 @@ public class DefaultUserConsolesDao implements UserConsolesDao {
   private NamedParameterJdbcTemplate jdbcTemplate; 
 
   @Override
-  public List<UserConsoles> fetchUserConsoles() {
+  public List<UserConsoles> getAllUserConsoles() {
     log.debug("No parameters for this method");
     
     // @formatter:off
@@ -62,7 +62,7 @@ public class DefaultUserConsolesDao implements UserConsolesDao {
         + "INSERT INTO user_consoles ("
         + "person_id, console_serial_num, console_name"
         + ") VALUES ("
-        + ":person_id, :console_serial_num, :console_name"
+        + ":personId, :consoleSerialNum, :consoleName"
         + ")";
     // @formatter:on
     
@@ -70,17 +70,17 @@ public class DefaultUserConsolesDao implements UserConsolesDao {
 //    Map<String, Object> params = new HashMap<>();
     
     params.sql = sql;
-    params.source.addValue("person_id", fillerParameter.getPersonId());
-    params.source.addValue("console_serial_num", fillerParameter.getConsoleSerialNum());
-    params.source.addValue("console_name", fillerParameter.getConsoleName());
+    params.source.addValue("personId", fillerParameter.getPersonId());
+    params.source.addValue("consoleSerialNum", fillerParameter.getConsoleSerialNum());
+    params.source.addValue("consoleName", fillerParameter.getConsoleName());
     
-//    params.put("person_id", fillerParameter.getPersonId());
-//    params.put("console_serial_num", fillerParameter.getConsoleSerialNum());
-//    params.put("console_name", fillerParameter.getConsoleName());
+//    params.put("personId", fillerParameter.getPersonId());
+//    params.put("consoleSerialNum", fillerParameter.getConsoleSerialNum());
+//    params.put("consoleName", fillerParameter.getConsoleName());
     
     KeyHolder keyHolder = new GeneratedKeyHolder();
     if (jdbcTemplate.update(params.sql, params.source, keyHolder) == 0) {
-      throw new NoSuchElementException("Update unsuccessful");
+      throw new NoSuchElementException("Creation unsuccessful");
     }
     
 //    KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -98,7 +98,72 @@ public class DefaultUserConsolesDao implements UserConsolesDao {
         .consoleName(fillerParameter.getConsoleName())
         .build();
     // @formatter:on
+  }
+  
+  @Override
+  public UserConsoles updateUserConsole(UserConsoles fillerParameter) {
+    log.debug("DAO: userConsoleId={}, personId={},consoleSerialNum={}, consoleName={}",
+        fillerParameter.getUserConsoleId(), fillerParameter.getPersonId(),
+        fillerParameter.getConsoleSerialNum(),fillerParameter.getConsoleName());
     
+    // @formatter:off
+    String sql = ""
+        + "UPDATE user_consoles SET "
+        + "person_id = :personId, "
+        + "console_serial_num = :consoleSerialNum, "
+        + "console_name = :consoleName "
+        + "WHERE user_console_id = :userConsoleId";
+    // @formatter:on
+    
+    SqlParams params = new SqlParams();
+    
+    params.sql = sql;
+    params.source.addValue("userConsoleId", fillerParameter.getUserConsoleId());
+    params.source.addValue("personId", fillerParameter.getPersonId());
+    params.source.addValue("consoleSerialNum", fillerParameter.getConsoleSerialNum());
+    params.source.addValue("consoleName", fillerParameter.getConsoleName());
+    
+//    KeyHolder keyHolder = new GeneratedKeyHolder();
+    if (jdbcTemplate.update(params.sql, params.source) == 0) {
+      throw new NoSuchElementException("Update unsuccessful");
+    }
+    
+//    int userConsoleId = keyHolder.getKey().intValue();
+    
+    // @formatter:off
+    return UserConsoles.builder()
+        .userConsoleId(fillerParameter.getUserConsoleId())
+        .personId(fillerParameter.getPersonId())
+        .consoleSerialNum(fillerParameter.getConsoleSerialNum())
+        .consoleName(fillerParameter.getConsoleName())
+        .build();
+    // @formatter:on
+  }
+  
+  @Override
+  public int deleteUserConsole(int userConsoleId) {
+    log.debug("DAO: userConsoleId={}",
+        userConsoleId);
+    
+    // @formatter:off
+    String sql = ""
+        + "DELETE FROM user_consoles "
+        + "WHERE user_console_id = :userConsoleId";
+    // @formatter:on
+    
+    SqlParams params = new SqlParams();
+    
+    params.sql = sql;
+    params.source.addValue("userConsoleId", userConsoleId);
+    
+//    KeyHolder keyHolder = new GeneratedKeyHolder();
+    if (jdbcTemplate.update(params.sql, params.source) == 0) {
+      throw new NoSuchElementException("Delete unsuccessful");
+    }
+    
+//    int userConsoleId = keyHolder.getKey().intValue();
+    
+    return userConsoleId;
   }
   
   class SqlParams {

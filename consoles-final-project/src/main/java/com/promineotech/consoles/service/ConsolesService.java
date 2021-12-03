@@ -12,7 +12,7 @@ public interface ConsolesService {
   /**
    * @return
    */
-  List<Consoles> fetchConsoles();
+  List<Consoles> getAllConsoles();
   
   /**
    * @param fillerParameter
@@ -27,9 +27,9 @@ public interface ConsolesService {
   Consoles updateConsole(Consoles fillerParameter);
 
   /**
-   * @param fillerParameter
+   * @param consoleName (database's console_name)
    * @return
    */
-  Consoles deleteConsole(Consoles fillerParameter);
+  String deleteConsole(String consoleName);
 
 }

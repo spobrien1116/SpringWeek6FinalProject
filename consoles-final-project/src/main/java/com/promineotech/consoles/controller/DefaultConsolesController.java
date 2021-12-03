@@ -2,6 +2,8 @@ package com.promineotech.consoles.controller;
 
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import com.promineotech.consoles.entity.Consoles;
@@ -21,27 +23,29 @@ public class DefaultConsolesController implements ConsolesController {
   private ConsolesService consolesService;
   
   @Override
-  public List<Consoles> fetchConsoles() {
-    log.debug("In fetchConsoles method");
-    return consolesService.fetchConsoles();
+  public List<Consoles> getAllConsoles() {
+    log.debug("In getAllConsoles method");
+    return consolesService.getAllConsoles();
   }
 
   @Override
   public Consoles createConsole(@Valid Consoles fillerParameter) {
-    log.debug("Filler parameter that will contain all columns in Consoles");
+    log.debug("Filler parameter that will contain the console row created in consoles");
     return consolesService.createConsole(fillerParameter);
   }
   
   @Override
   public Consoles updateConsole(@Valid Consoles fillerParameter) {
-    log.debug("Filler parameter that will contain the console row updated in Consoles");
+    log.debug("Filler parameter that will contain the console row updated in consoles");
     return consolesService.updateConsole(fillerParameter);
   }
   
   @Override
-  public Consoles deleteConsole(@Valid Consoles fillerParameter) {
-    log.debug("Filler parameter that will contain the console row deleted in Consoles");
-    return consolesService.deleteConsole(fillerParameter);
+  public String deleteConsole(@Valid @Length(max = 25) @Pattern(regexp = "[\\w\\s]*")
+    String consoleName) {
+    log.debug("Name of the console for the console row deleted in consoles");
+    log.debug("consoleName={}", consoleName);
+    return consolesService.deleteConsole(consoleName);
   }
 
 }

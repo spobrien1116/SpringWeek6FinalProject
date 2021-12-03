@@ -23,11 +23,11 @@ public class DefaultUserConsolesService implements UserConsolesService {
   
   @Transactional(readOnly = true)
   @Override
-  public List<UserConsoles> fetchUserConsoles() {
-    log.info("The ConsolesDao.fetchConsoles method was called from the service layer "
-        + "attempting to retrieve a list of all Consoles");
+  public List<UserConsoles> getAllUserConsoles() {
+    log.info("The UserConsolesDao.getAllUserConsoles method was called from the service layer "
+        + "attempting to retrieve a list of all user consoles");
     
-    List<UserConsoles> userConsoles = userConsolesDao.fetchUserConsoles();
+    List<UserConsoles> userConsoles = userConsolesDao.getAllUserConsoles();
     
     if (userConsoles.isEmpty()) {
       String msg = String.format("No user consoles were found in the user consoles table");
@@ -43,6 +43,22 @@ public class DefaultUserConsolesService implements UserConsolesService {
     log.info("The UserConsolesDao.createUserConsole method was called from the service layer "
         + "attempting to create a user console");
     return userConsolesDao.createUserConsole(fillerParameter);
+  }
+  
+  @Transactional
+  @Override
+  public UserConsoles updateUserConsole(UserConsoles fillerParameter) {
+    log.info("The UserConsolesDao.updateUserConsole method was called from the service layer "
+        + "attempting to update a user console");
+    return userConsolesDao.updateUserConsole(fillerParameter);
+  }
+  
+  @Transactional
+  @Override
+  public int deleteUserConsole(int userConsoleId) {
+    log.info("The UserConsolesDao.deleteUserConsole method was called from the service layer "
+        + "attempting to delete a user console");
+    return userConsolesDao.deleteUserConsole(userConsoleId);
   }
 
 }

@@ -8,7 +8,7 @@ INSERT INTO consoles (console_name, controllers, release_year, release_price, on
 ('Nintendo Gamecube', '4', 2001, '199.00', '1'),
 ('Sega Dreamcast', '4', 1998, '199.00', '1');
 
-INSERT INTO games_on_console (game_name, console_name) VALUES ('Sonic The Hedgehog', 'Sega Genesis'),
+INSERT INTO games_on_consoles (game_name, console_name) VALUES ('Sonic The Hedgehog', 'Sega Genesis'),
 ('Sonic The Hedgehog 2', 'Sega Genesis'),
 ('Battletoads', 'Sega Genesis'),
 ('The Lost Vikings', 'Sega Genesis'),
@@ -61,4 +61,15 @@ INSERT INTO games_on_console (game_name, console_name) VALUES ('Sonic The Hedgeh
 INSERT INTO users (full_name, user_name) VALUES ('Shawn O\'Brien', 'DefaultProfile'),
 ('Guest One', 'GuestUser1'),
 ('Guest Two', 'GuestUser2'),
-('Guest Three', 'GuestUser3');
+('Guest Three', 'GuestUser3'),
+('Test Person', 'tester123'),
+('Update Test', 'test345');
+
+INSERT INTO user_consoles (person_id, console_serial_num, console_name) VALUES ('5', '123456', 'Sega Genesis'),
+('6', '234566', 'Playstation'),
+('6', '345678', 'Nintendo 64');
+
+INSERT INTO user_games (person_id, game_serial_num, game_name, console_name) VALUES ('5', '1234546', 'Soulcalibur II', 'Nintendo Gamecube'),
+('5', '1234567', 'Soulcalibur II', 'Xbox 360'),
+('6', '654320', 'Donkey Kong 64', 'Nintendo 64'),
+('6', '111111', 'Wii Sports', 'Nintendo Wii');

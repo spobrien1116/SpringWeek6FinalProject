@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.promineotech.consoles;
 
 import org.springframework.boot.SpringApplication;

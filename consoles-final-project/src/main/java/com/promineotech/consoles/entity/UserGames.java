@@ -11,8 +11,11 @@ import lombok.Data;
 @Data
 @Builder
 public class UserGames {
+  
   private int userGameId;
   private int personId;
   private int gameSerialNum;
   private String gameName;
+  private String consoleName;
+  
 }

@@ -12,12 +12,28 @@ public interface UsersService {
   /**
    * @return
    */
-  List<Users> fetchUsers();
+  List<Users> getAllUsers();
+  
   
   /**
    * @param fillerParameter
    * @return
    */
   Users createUser(Users fillerParameter);
+
+  
+  /**
+   * @param fillerParameter
+   * @return
+   */
+  Users updateUser(Users fillerParameter);
+  
+  
+  /**
+   * @param fullName (database's full_name)
+   * @param userName (database's user_name)
+   * @return
+   */
+  Users deleteUser(String fullName, String userName);
 
 }

@@ -12,7 +12,7 @@ public interface UserConsolesService {
   /**
    * @return
    */
-  List<UserConsoles> fetchUserConsoles();
+  List<UserConsoles> getAllUserConsoles();
 
   
   /**
@@ -20,5 +20,19 @@ public interface UserConsolesService {
    * @return
    */
   UserConsoles createUserConsole(UserConsoles fillerParameter);
+  
+  
+  /**
+   * @param fillerParameter
+   * @return
+   */
+  UserConsoles updateUserConsole(UserConsoles fillerParameter);
+  
+  
+  /**
+   * @param userConsoleId (database's user_console_id)
+   * @return
+   */
+  int deleteUserConsole(int userConsoleId);
 
 }

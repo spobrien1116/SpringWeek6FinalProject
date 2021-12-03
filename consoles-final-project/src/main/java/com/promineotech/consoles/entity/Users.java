@@ -1,6 +1,5 @@
 package com.promineotech.consoles.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,12 +11,19 @@ import lombok.Data;
 @Data
 @Builder
 public class Users {
+  
   private int personId;
   private String fullName;
   private String userName;
   
-  @JsonIgnore
-  public int getPersonId() {
-    return personId;
-  }
+//  @JsonIgnore
+//  public void setPersonId(int personId) {
+//    this.personId = personId;
+//  }
+  
+//  @JsonIgnore
+//  public int getPersonId() {
+//    return personId;
+//  }
+  
 }

@@ -12,7 +12,7 @@ public interface UsersDao {
   /**
    * @return
    */
-  List<Users> fetchUsers();
+  List<Users> getAllUsers();
   
   
   /**
@@ -20,5 +20,20 @@ public interface UsersDao {
    * @return
    */
   Users createUser(Users fillerParameter);
+  
+  
+  /**
+   * @param fillerParameter
+   * @return
+   */
+  Users updateUser(Users fillerParameter);
+  
+  
+  /**
+   * @param fullName (database's full_name)
+   * @param userName (database's user_name)
+   * @return
+   */
+  Users deleteUser(String fullName, String userName);
 
 }

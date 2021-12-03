@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import com.promineotech.consoles.entity.Consoles;
 import com.promineotech.consoles.entity.Users;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +27,7 @@ public class DefaultUsersDao implements UsersDao {
   private NamedParameterJdbcTemplate jdbcTemplate;
   
   @Override
-  public List<Users> fetchUsers() {
+  public List<Users> getAllUsers() {
     log.debug("No parameters for this method");
     
     // @formatter:off
@@ -61,19 +60,19 @@ public class DefaultUsersDao implements UsersDao {
         + "INSERT INTO users ("
         + "full_name, user_name"
         + ") VALUES ("
-        + ":full_name, :user_name"
+        + ":fullName, :userName"
         + ")";
     // @formatter:on
     
     SqlParams params = new SqlParams();
     
     params.sql = sql;
-    params.source.addValue("full_name", fillerParameter.getFullName());
-    params.source.addValue("user_name", fillerParameter.getUserName());
+    params.source.addValue("fullName", fillerParameter.getFullName());
+    params.source.addValue("userName", fillerParameter.getUserName());
     
     KeyHolder keyHolder = new GeneratedKeyHolder();
     if (jdbcTemplate.update(params.sql, params.source, keyHolder) == 0) {
-      throw new NoSuchElementException("Update unsuccessful");
+      throw new NoSuchElementException("Creation unsuccessful");
     }
     
     int personId = keyHolder.getKey().intValue();
@@ -86,6 +85,73 @@ public class DefaultUsersDao implements UsersDao {
         .build();
     // @formatter:on
   
+  }
+  
+  @Override
+  public Users updateUser(Users fillerParameter) {
+    log.debug("DAO: personId={}, fullName={}, userName={}",
+        fillerParameter.getPersonId(),
+        fillerParameter.getFullName(), fillerParameter.getUserName());
+    
+    // @formatter:off
+    String sql = ""
+        + "UPDATE users SET "
+        + "full_name = :fullName, "
+        + "user_name = :userName "
+        + "WHERE person_id = :personId";
+    // @formatter:on
+    
+    SqlParams params = new SqlParams();
+    
+    params.sql = sql;
+    params.source.addValue("personId", fillerParameter.getPersonId());
+    params.source.addValue("fullName", fillerParameter.getFullName());
+    params.source.addValue("userName", fillerParameter.getUserName());
+    
+//    KeyHolder keyHolder = new GeneratedKeyHolder();
+    if (jdbcTemplate.update(params.sql, params.source) == 0) {
+      throw new NoSuchElementException("Update unsuccessful");
+    }
+    
+//    int personId = keyHolder.getKey().intValue();
+    
+    // @formatter:off
+    return Users.builder()
+        .personId(fillerParameter.getPersonId())
+        .fullName(fillerParameter.getFullName())
+        .userName(fillerParameter.getUserName())
+        .build();
+    // @formatter:on
+  }
+  
+  @Override
+  public Users deleteUser(String fullName, String userName) {
+    log.debug("DAO: fullName={}, userName={},",
+        fullName, userName);
+    
+    // @formatter:off
+    String sql = ""
+        + "DELETE FROM users "
+        + "WHERE full_name = :fullName "
+        + "AND user_name = :userName";
+    // @formatter:on
+    
+    SqlParams params = new SqlParams();
+    
+    params.sql = sql;
+    params.source.addValue("fullName", fullName);
+    params.source.addValue("userName", userName);
+    
+    if (jdbcTemplate.update(params.sql, params.source) == 0) {
+      throw new NoSuchElementException("Delete unsuccessful");
+    }
+    
+    // @formatter:off
+    return Users.builder()
+        .fullName(fullName)
+        .userName(userName)
+        .build();
+    // @formatter:on
   }
   
   class SqlParams {

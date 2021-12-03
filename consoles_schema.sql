@@ -3,7 +3,7 @@ USE consoles;
 DROP TABLE IF EXISTS user_consoles;
 DROP TABLE IF EXISTS user_games;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS games_on_console;
+DROP TABLE IF EXISTS games_on_consoles;
 DROP TABLE IF EXISTS consoles;
 
 CREATE TABLE consoles (
@@ -15,7 +15,7 @@ CREATE TABLE consoles (
   PRIMARY KEY (console_name)
 );
 
--- CREATE TABLE games_on_console (
+-- CREATE TABLE games_on_consoles (
 --   game_id int NOT NULL auto_increment,
 --   game_name varchar(25) NOT NULL,
 --   console_name varchar(25) NOT NULL, 
@@ -23,7 +23,7 @@ CREATE TABLE consoles (
 --   FOREIGN KEY (console_name) references consoles(console_name)
 -- );
 
-CREATE TABLE games_on_console (
+CREATE TABLE games_on_consoles (
   game_name varchar(50) NOT NULL,
   console_name varchar(25) NOT NULL,
   PRIMARY KEY (game_name, console_name),
@@ -47,22 +47,14 @@ CREATE TABLE user_consoles (
   FOREIGN KEY (console_name) references consoles(console_name)
 );
 
--- CREATE TABLE user_games (
---   user_game_id int NOT NULL auto_increment,
---   person_id int NOT NULL,
---   game_serial_num int NOT NULL,
---   game_id int NOT NULL,
---   PRIMARY KEY (user_game_id),
---   FOREIGN KEY (person_id) references users(person_id),
---   FOREIGN KEY (game_id) references games_on_console(game_id)
--- );
-
 CREATE TABLE user_games (
   user_game_id int NOT NULL auto_increment,
   person_id int NOT NULL,
   game_serial_num int NOT NULL,
   game_name varchar(50) NOT NULL,
+  console_name varchar(25) NOT NULL,
   PRIMARY KEY (user_game_id),
   FOREIGN KEY (person_id) references users(person_id),
-  FOREIGN KEY (game_name) references games_on_console(game_name)
+  FOREIGN KEY (game_name) references games_on_consoles(game_name),
+  FOREIGN KEY (console_name) references consoles(console_name)
 );

@@ -1,6 +1,5 @@
 package com.promineotech.consoles.service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +23,11 @@ public class DefaultConsolesService implements ConsolesService {
   
   @Transactional(readOnly = true)
   @Override
-  public List<Consoles> fetchConsoles() {
-    log.info("The ConsolesDao.fetchConsoles method was called from the service layer"
+  public List<Consoles> getAllConsoles() {
+    log.info("The ConsolesDao.getAllConsoles method was called from the service layer "
         + "attempting to retrieve a list of all Consoles");
     
-    List<Consoles> consoles = consolesDao.fetchConsoles();
+    List<Consoles> consoles = consolesDao.getAllConsoles();
     
     if (consoles.isEmpty()) {
       String msg = String.format("No consoles were found in the consoles table");
@@ -50,17 +49,17 @@ public class DefaultConsolesService implements ConsolesService {
   @Transactional
   @Override
   public Consoles updateConsole(Consoles fillerParameter) {
-    log.info("The ConsolesDao.updateConsole method was called from the service layer"
-        + "attemtping to update a console");
+    log.info("The ConsolesDao.updateConsole method was called from the service layer "
+        + "attempting to update a console");
     return consolesDao.updateConsole(fillerParameter);
   }
   
   @Transactional
   @Override
-  public Consoles deleteConsole(Consoles fillerParameter) {
-    log.info("The ConsolesDao.deleteConsole method was called from the service layer"
+  public String deleteConsole(String consoleName) {
+    log.info("The ConsolesDao.deleteConsole method was called from the service layer "
         + "attempting to delete a console");
-    return consolesDao.deleteConsole(fillerParameter);
+    return consolesDao.deleteConsole(consoleName);
   }
 
 }

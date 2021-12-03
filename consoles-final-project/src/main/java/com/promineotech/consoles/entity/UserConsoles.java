@@ -1,6 +1,5 @@
 package com.promineotech.consoles.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,8 +16,8 @@ public class UserConsoles {
   private int consoleSerialNum;
   private String consoleName;
   
-  @JsonIgnore
-  public int getUserConsoleId() {
-    return userConsoleId;
-  }
+//  @JsonIgnore
+//  public void setUserConsoleId(int userConsoleId) {
+//    this.userConsoleId = userConsoleId;
+//  }
 }

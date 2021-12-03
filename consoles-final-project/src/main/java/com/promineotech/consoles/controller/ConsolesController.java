@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
  * @author Shawn O'Brien
  *
  */
+
 @Validated
 @RequestMapping("/consoles")
 @OpenAPIDefinition(info = @Info(title = "Consoles and Games Service"), servers = {
@@ -36,12 +37,12 @@ public interface ConsolesController {
 
   // @formatter:off
   @Operation(
-     summary = "Returns a list of Consoles",
-     description = "Returns a list of all Consoles",
+     summary = "Returns a list of consoles",
+     description = "Returns a list of all consoles",
      responses = {
          @ApiResponse(
              responseCode = "200",
-             description = "A list of Consoles is returned",
+             description = "A list of consoles is returned",
              content = @Content(
                  mediaType = "application/json",
                  schema = @Schema(implementation = Consoles.class))),
@@ -51,7 +52,7 @@ public interface ConsolesController {
              content = @Content(mediaType = "application/json")),
          @ApiResponse(
              responseCode = "404",
-             description = "No Consoles were found with the input criteria",
+             description = "No consoles were found with the input criteria",
              content = @Content(mediaType = "application/json")),
          @ApiResponse(
              responseCode = "500",
@@ -68,18 +69,12 @@ public interface ConsolesController {
   )
   @GetMapping
   @ResponseStatus(code = HttpStatus.OK)
-  List<Consoles> fetchConsoles();
-// List<Jeep> fetchJeeps(
-//     @RequestParam(required = false)
-//         JeepModel model,
-//     @Length(max = Constants.TRIM_MAX_LENGTH)
-//     @Pattern(regexp = "[\\w\\s]*")
-//     @RequestParam(required = false)
-//         String trim);
+  List<Consoles> getAllConsoles();
   // @formatter:on
   
- // @formatter:off
- @Operation(
+  
+  // @formatter:off
+  @Operation(
      summary = "Create an entry for consoles",
      description = "Returns the created console",
      responses = {
@@ -106,7 +101,7 @@ public interface ConsolesController {
 //         @Parameter(
 //             name = "fillerParameter",
 //             required = true,
-//             description = "One row entry of user_consoles as JSON")
+//             description = "One row entry of consoles as JSON")
      }
  )
  @PostMapping
@@ -114,76 +109,78 @@ public interface ConsolesController {
  Consoles createConsole(@Valid @RequestBody Consoles fillerParameter);
  // @formatter:on
  
-// @formatter:off
-@Operation(
-   summary = "Update an entry for consoles",
-   description = "Returns the updated console",
-   responses = {
-       @ApiResponse(
-           responseCode = "200",
-           description = "The updated console is returned",
-           content = @Content(
-               mediaType = "application/json",
-               schema = @Schema(implementation = Consoles.class))),
-       @ApiResponse(
-           responseCode = "400",
-           description = "The request parameters are invalid",
-           content = @Content(mediaType = "application/json")),
-       @ApiResponse(
-           responseCode = "404",
-           description = "A console was not found with the name input criteria",
-           content = @Content(mediaType = "application/json")),
-       @ApiResponse(
-           responseCode = "500",
-           description = "An unplanned error occurred.",
-           content = @Content(mediaType = "application/json"))
-//   },
-//   parameters = {
-//       @Parameter(
-//           name = "fillerParameter",
-//           required = true,
-//           description = "One row entry of consoles as JSON")
-   }
-)
-@PutMapping
-@ResponseStatus(code = HttpStatus.OK)
-Consoles updateConsole(@Valid @RequestBody Consoles fillerParameter);
-// @formatter:on
+ 
+ // @formatter:off
+ @Operation(
+    summary = "Update an entry for consoles",
+    description = "Returns the updated console",
+    responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "The updated console is returned",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Consoles.class))),
+        @ApiResponse(
+            responseCode = "400",
+            description = "The request parameters are invalid",
+            content = @Content(mediaType = "application/json")),
+        @ApiResponse(
+            responseCode = "404",
+            description = "A console was not found with the name input criteria",
+            content = @Content(mediaType = "application/json")),
+        @ApiResponse(
+            responseCode = "500",
+            description = "An unplanned error occurred.",
+            content = @Content(mediaType = "application/json"))
+    }
+ )
+ @PutMapping
+ @ResponseStatus(code = HttpStatus.OK)
+ Consoles updateConsole(@Valid @RequestBody Consoles fillerParameter);
+ // @formatter:on
 
-// @formatter:off
-@Operation(
- summary = "Delete an entry from consoles",
- description = "Returns the deleted console",
- responses = {
-     @ApiResponse(
-         responseCode = "200",
-         description = "The deleted console is returned",
-         content = @Content(
-             mediaType = "application/json",
-             schema = @Schema(implementation = Consoles.class))),
-     @ApiResponse(
-         responseCode = "400",
-         description = "The request parameters are invalid",
-         content = @Content(mediaType = "application/json")),
-     @ApiResponse(
-         responseCode = "404",
-         description = "A console was not found with the name input criteria",
-         content = @Content(mediaType = "application/json")),
-     @ApiResponse(
-         responseCode = "500",
-         description = "An unplanned error occurred.",
-         content = @Content(mediaType = "application/json"))
-// },
-// parameters = {
-//     @Parameter(
-//         name = "fillerParameter",
-//         required = true,
-//         description = "One row entry of consoles as JSON")
- }
-)
-@DeleteMapping
-@ResponseStatus(code = HttpStatus.OK)
-Consoles deleteConsole(@Valid @RequestBody Consoles fillerParameter);
-// @formatter:on
+
+ // @formatter:off
+ @Operation(
+    summary = "Delete an entry from consoles",
+    description = "Returns the deleted console",
+    responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "The deleted console is returned",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = Consoles.class))),
+        @ApiResponse(
+            responseCode = "400",
+            description = "The request parameters are invalid",
+            content = @Content(mediaType = "application/json")),
+        @ApiResponse(
+            responseCode = "404",
+            description = "A console was not found with the name input criteria",
+            content = @Content(mediaType = "application/json")),
+        @ApiResponse(
+            responseCode = "500",
+            description = "An unplanned error occurred.",
+            content = @Content(mediaType = "application/json"))
+    },
+    parameters = {
+        @Parameter(
+            name = "consoleName",
+            allowEmptyValue = false,
+            required = true,
+            description = "The console_name (i.e., 'Sega Genesis')")
+    }
+ )
+ @DeleteMapping
+ @ResponseStatus(code = HttpStatus.OK)
+ String deleteConsole(
+     @Valid 
+     @RequestParam(required = true)
+     @Length(max = 25)
+     @Pattern(regexp = "[\\w\\s]*")
+         String consoleName);
+ // @formatter:on
  
 }

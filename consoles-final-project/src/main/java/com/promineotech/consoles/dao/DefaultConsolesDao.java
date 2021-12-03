@@ -2,16 +2,12 @@ package com.promineotech.consoles.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import com.promineotech.consoles.entity.Consoles;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +25,7 @@ public class DefaultConsolesDao implements ConsolesDao {
   private NamedParameterJdbcTemplate jdbcTemplate;
   
   @Override
-  public List<Consoles> fetchConsoles() {
+  public List<Consoles> getAllConsoles() {
     log.debug("No parameters for this method");
     
     // @formatter:off
@@ -67,29 +63,26 @@ public class DefaultConsolesDao implements ConsolesDao {
         + "INSERT INTO consoles ("
         + "console_name, controllers, release_year, release_price, online_capable"
         + ") VALUES ("
-        + ":console_name, :controllers, :release_year, :release_price, :online_capable"
+        + ":consoleName, :controllers, :releaseYear, :releasePrice, :onlineCapable"
         + ")";
     // @formatter:on
     
     SqlParams params = new SqlParams();
     
     params.sql = sql;
-    params.source.addValue("console_name", fillerParameter.getConsoleName());
+    params.source.addValue("consoleName", fillerParameter.getConsoleName());
     params.source.addValue("controllers", fillerParameter.getControllers());
-    params.source.addValue("release_year", fillerParameter.getReleaseYear());
-    params.source.addValue("release_price", fillerParameter.getReleasePrice());
-    params.source.addValue("online_capable", fillerParameter.getOnlineCapable());
+    params.source.addValue("releaseYear", fillerParameter.getReleaseYear());
+    params.source.addValue("releasePrice", fillerParameter.getReleasePrice());
+    params.source.addValue("onlineCapable", fillerParameter.getOnlineCapable());
     
-    KeyHolder keyHolder = new GeneratedKeyHolder();
-    if (jdbcTemplate.update(params.sql, params.source, keyHolder) == 0) {
-      throw new NoSuchElementException("Update unsuccessful");
+    if (jdbcTemplate.update(params.sql, params.source) == 0) {
+      throw new NoSuchElementException("Creation unsuccessful");
     }
-    
-    String consoleName = keyHolder.getKey().toString();
     
     // @formatter:off
     return Consoles.builder()
-        .consoleName(consoleName)
+        .consoleName(fillerParameter.getConsoleName())
         .controllers(fillerParameter.getControllers())
         .releaseYear(fillerParameter.getReleaseYear())
         .releasePrice(fillerParameter.getReleasePrice())
@@ -119,52 +112,11 @@ public class DefaultConsolesDao implements ConsolesDao {
     SqlParams params = new SqlParams();
     
     params.sql = sql;
-    params.source.addValue("console_name", fillerParameter.getConsoleName());
+    params.source.addValue("consoleName", fillerParameter.getConsoleName());
     params.source.addValue("controllers", fillerParameter.getControllers());
-    params.source.addValue("release_year", fillerParameter.getReleaseYear());
-    params.source.addValue("release_price", fillerParameter.getReleasePrice());
-    params.source.addValue("online_capable", fillerParameter.getOnlineCapable());
-    
-    KeyHolder keyHolder = new GeneratedKeyHolder();
-    if (jdbcTemplate.update(params.sql, params.source, keyHolder) == 0) {
-      throw new NoSuchElementException("Update unsuccessful");
-    }
-    
-    String consoleName = keyHolder.getKey().toString();
-    
-    // @formatter:off
-    return Consoles.builder()
-        .consoleName(consoleName)
-        .controllers(fillerParameter.getControllers())
-        .releaseYear(fillerParameter.getReleaseYear())
-        .releasePrice(fillerParameter.getReleasePrice())
-        .onlineCapable(fillerParameter.getOnlineCapable())
-        .build();
-    // @formatter:on
-  }
-  
-  @Override
-  public Consoles deleteConsole(Consoles fillerParameter) {
-    log.debug("DAO: consoleName={}, controllers={}, releaseYear={}, releasePrice={}, "
-        + "onlineCapable={}",
-        fillerParameter.getConsoleName(), fillerParameter.getControllers(), 
-        fillerParameter.getReleaseYear(), fillerParameter.getReleasePrice(), 
-        fillerParameter.getOnlineCapable());
-    
-    // @formatter:off
-    String sql = ""
-        + "DELETE FROM consoles "
-        + "WHERE console_name = :consoleName";
-    // @formatter:on
-    
-    SqlParams params = new SqlParams();
-    
-    params.sql = sql;
-    params.source.addValue("console_name", fillerParameter.getConsoleName());
-    params.source.addValue("controllers", fillerParameter.getControllers());
-    params.source.addValue("release_year", fillerParameter.getReleaseYear());
-    params.source.addValue("release_price", fillerParameter.getReleasePrice());
-    params.source.addValue("online_capable", fillerParameter.getOnlineCapable());
+    params.source.addValue("releaseYear", fillerParameter.getReleaseYear());
+    params.source.addValue("releasePrice", fillerParameter.getReleasePrice());
+    params.source.addValue("onlineCapable", fillerParameter.getOnlineCapable());
     
     if (jdbcTemplate.update(params.sql, params.source) == 0) {
       throw new NoSuchElementException("Update unsuccessful");
@@ -179,6 +131,29 @@ public class DefaultConsolesDao implements ConsolesDao {
         .onlineCapable(fillerParameter.getOnlineCapable())
         .build();
     // @formatter:on
+  }
+  
+  @Override
+  public String deleteConsole(String consoleName) {
+    log.debug("DAO: consoleName={}",
+        consoleName);
+    
+    // @formatter:off
+    String sql = ""
+        + "DELETE FROM consoles "
+        + "WHERE console_name = :consoleName";
+    // @formatter:on
+    
+    SqlParams params = new SqlParams();
+    
+    params.sql = sql;
+    params.source.addValue("consoleName", consoleName);
+    
+    if (jdbcTemplate.update(params.sql, params.source) == 0) {
+      throw new NoSuchElementException("Delete unsuccessful");
+    }
+    
+    return consoleName;
   }
 
   class SqlParams {

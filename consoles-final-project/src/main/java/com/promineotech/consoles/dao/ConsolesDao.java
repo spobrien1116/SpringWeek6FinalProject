@@ -12,7 +12,7 @@ public interface ConsolesDao {
   /**
    * @return
    */
-  List<Consoles> fetchConsoles();
+  List<Consoles> getAllConsoles();
   
   
   /**
@@ -30,9 +30,9 @@ public interface ConsolesDao {
 
   
   /**
-   * @param fillerParameter
+   * @param consoleName (database's console_name)
    * @return
    */
-  Consoles deleteConsole(Consoles fillerParameter);
+  String deleteConsole(String consoleName);
 
 }
